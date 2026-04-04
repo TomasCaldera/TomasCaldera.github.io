@@ -7,4 +7,5 @@ Desplegado con GitHub Pages.
 ## Secciones (próximamente)
 - Sobre mí
 - Proyectos
-- Contact
+- Contactos
+- Otros
