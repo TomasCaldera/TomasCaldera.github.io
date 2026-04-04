@@ -1,11 +1,14 @@
 # Tomás Caldera
 
-Portfolio y sitio de marca personal.
-Construido con HTML, CSS y JavaScript.
-Desplegado con GitHub Pages.
+Landing personal (HTML + CSS + JavaScript) lista para desplegar en **GitHub Pages**.
 
-## Secciones (próximamente)
-- Sobre mí
-- Proyectos
-- Contactos
-- Otros
+## Publicar en GitHub Pages
+
+1. Subí estos archivos al branch principal del repositorio.
+2. En GitHub: **Settings → Pages**.
+3. En **Build and deployment**, elegí:
+   - **Source:** Deploy from a branch
+   - **Branch:** `main` (root)
+4. Guardá y esperá la URL pública de Pages.
+
+> Nota: El sitio usa rutas relativas (`./styles.css`, `./script.js`) para funcionar correctamente en GitHub Pages.
