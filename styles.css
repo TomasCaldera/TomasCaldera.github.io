@@ -1,5 +1,5 @@
 :root {
-  --bg: #0a120f;
+  --bg: #020805;
   --surface: #121b2e;
   --surface-2: #1d2940;
   --text: #e8edf6;
@@ -20,7 +20,7 @@ body {
   margin: 0;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   line-height: 1.6;
-  background: linear-gradient(180deg, #0d1813 0%, var(--bg) 100%);
+  background: linear-gradient(180deg, #0b2f1b 0%, #04110a 55%, var(--bg) 100%);
   color: var(--text);
 }
 
