@@ -170,8 +170,6 @@ if (parallaxRoot && !prefersReducedMotion.matches) {
   parallaxRoot.addEventListener('pointerleave', () => {
     pointerX = 0;
     pointerY = 0;
-    parallaxRoot.style.setProperty('--glow-x', '50%');
-    parallaxRoot.style.setProperty('--glow-y', '50%');
     parallaxRoot.classList.remove('is-active');
     orbitScene?.classList.remove('is-active');
     queueRender();
