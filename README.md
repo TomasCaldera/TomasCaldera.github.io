@@ -37,17 +37,36 @@ Luego abrir:
 http://127.0.0.1:4173
 ```
 
-## GitHub Pages
+## CI/CD
 
-El sitio esta pensado para publicarse desde la raiz del branch `main`.
+El proyecto ahora queda pensado para usar GitHub Actions como pipeline.
+
+### CI
+
+Workflow: `.github/workflows/ci.yml`
+
+Valida en cada push y pull request:
+
+- que existan los archivos base del sitio
+- que `index.html` y `brand.html` mantengan referencias locales correctas
+- que la landing pueda servirse localmente
+- que las paginas principales respondan correctamente por HTTP
+
+### Deploy
+
+Workflow: `.github/workflows/deploy-pages.yml`
+
+Publica automaticamente a GitHub Pages cuando hay cambios en `main`.
 
 Configuracion recomendada en GitHub:
 
 1. Ir a `Settings > Pages`
-2. En `Build and deployment`, elegir `Deploy from a branch`
-3. Seleccionar el branch `main`
-4. Seleccionar la carpeta `/ (root)`
-5. Guardar y esperar la publicacion
+2. En `Build and deployment`, elegir `GitHub Actions`
+3. Guardar
+
+## GitHub Pages
+
+El deploy productivo sale desde GitHub Actions sobre `main`.
 
 URL esperada:
 
@@ -60,6 +79,7 @@ https://tomascaldera.github.io
 - El proyecto usa rutas relativas para funcionar correctamente en GitHub Pages.
 - `node_modules/` no se versiona.
 - `package.json` y `package-lock.json` quedan en el repo solo para conservar la configuracion local de herramientas como Playwright.
+- Para publicar con el nuevo flujo, GitHub Pages debe estar configurado en modo `GitHub Actions`.
 
 ## Estado actual
 

@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - experiment/**
+      - feature/**
+      - fix/**
+
+jobs:
+  validate-static-site:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate required files
+        run: |
+          test -f index.html
+          test -f brand.html
+          test -f styles.css
+          test -f script.js
+
+      - name: Validate HTML metadata and local references
+        run: |
+          grep -q '<meta charset="UTF-8"' index.html
+          grep -q '<meta name="viewport"' index.html
+          grep -q './styles.css' index.html
+          grep -q './script.js' index.html
+          grep -q './styles.css' brand.html
+
+      - name: Serve site locally
+        run: |
+          python3 -m http.server 4173 >/tmp/site.log 2>&1 &
+          echo $! > /tmp/site.pid
+          sleep 2
+
+      - name: Check landing and brand pages
+        run: |
+          curl -fsSL http://127.0.0.1:4173/index.html | grep -q '<title>'
+          curl -fsSL http://127.0.0.1:4173/index.html | grep -q 'Tom'
+          curl -fsSL http://127.0.0.1:4173/brand.html | grep -q 'Brand'
+
+      - name: Stop local server
+        if: always()
+        run: |
+          kill "$(cat /tmp/site.pid)"
