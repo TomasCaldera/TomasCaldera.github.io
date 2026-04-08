@@ -1,11 +1,92 @@
 const yearElement = document.getElementById('year');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 if (yearElement) {
   yearElement.textContent = new Date().getFullYear();
 }
 
+const typewordElement = document.querySelector('.hero-word[data-typewords]');
+
+if (typewordElement) {
+  const words = (typewordElement.dataset.typewords || '')
+    .split(',')
+    .map((word) => word.trim())
+    .filter(Boolean);
+
+  const initialWord = typewordElement.textContent.trim();
+
+  if (!words.includes(initialWord)) {
+    words.unshift(initialWord);
+  }
+
+  if (!prefersReducedMotion.matches && words.length > 1) {
+    let currentIndex = 0;
+    let currentText = initialWord;
+    let isDeleting = false;
+    let timeoutId = null;
+
+    const pickNextIndex = () => {
+      if (words.length <= 1) {
+        return currentIndex;
+      }
+
+      let nextIndex = currentIndex;
+
+      while (nextIndex === currentIndex) {
+        nextIndex = Math.floor(Math.random() * words.length);
+      }
+
+      return nextIndex;
+    };
+
+    const tick = () => {
+      const targetWord = words[currentIndex];
+
+      if (!isDeleting && currentText === targetWord) {
+        typewordElement.classList.add('is-paused');
+        timeoutId = window.setTimeout(() => {
+          typewordElement.classList.remove('is-paused');
+          typewordElement.classList.add('is-erasing');
+          isDeleting = true;
+          tick();
+        }, 1300 + Math.random() * 900);
+        return;
+      }
+
+      if (isDeleting && currentText.length === 0) {
+        typewordElement.classList.remove('is-erasing');
+        currentIndex = pickNextIndex();
+        isDeleting = false;
+      }
+
+      const nextTarget = words[currentIndex];
+
+      if (isDeleting) {
+        currentText = currentText.slice(0, -1);
+      } else {
+        currentText = nextTarget.slice(0, currentText.length + 1);
+      }
+
+      typewordElement.textContent = currentText;
+
+      const delay = isDeleting
+        ? 42 + Math.random() * 36
+        : 58 + Math.random() * 52;
+
+      timeoutId = window.setTimeout(tick, delay);
+    };
+
+    timeoutId = window.setTimeout(tick, 1000);
+
+    window.addEventListener('beforeunload', () => {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+    });
+  }
+}
+
 const parallaxRoot = document.querySelector('[data-parallax-root]');
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 if (parallaxRoot && !prefersReducedMotion.matches) {
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
